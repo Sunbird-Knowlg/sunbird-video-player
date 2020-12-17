@@ -14,8 +14,14 @@ export class VideoPlayerComponent implements AfterViewInit {
   showPlayButton = true;
   showPauseButton = false;
   showControls = true;
-  private unlistenMouseEnter: () => void;
-  private unlistenMouseLeave: () => void;
+  currentPlayerState = 'none';
+  private unlistenTargetMouseEnter: () => void;
+  private unlistenTargetMouseLeave: () => void;
+  private unlistenControlDivMouseEnter: () => void;
+  private unlistenControlDivMouseLeave: () => void;
+  private unlistenControlDivTouchEnd: () => void;
+  private unlistenControlDivTouchStart: () => void;
+  private unlistenTargetTouchStart: () => void;
   @ViewChild('target') target: ElementRef;
   @ViewChild('controlDiv') controlDiv: ElementRef;
   player: videojs.Player;
@@ -48,20 +54,36 @@ export class VideoPlayerComponent implements AfterViewInit {
     })
 
 
-    this.unlistenMouseEnter = this.renderer2.listen(this.target.nativeElement, 'mouseenter', () => {
+    this.unlistenTargetMouseEnter = this.renderer2.listen(this.target.nativeElement, 'mouseenter', () => {
       this.showControls = true;
     });
 
-    this.unlistenMouseLeave = this.renderer2.listen(this.target.nativeElement, 'mouseleave', () => {
+    this.unlistenTargetMouseLeave = this.renderer2.listen(this.target.nativeElement, 'mouseleave', () => {
       this.showControls = false;
     });
 
-    this.unlistenMouseEnter = this.renderer2.listen(this.controlDiv.nativeElement, 'mouseenter', () => {
+    this.unlistenControlDivMouseEnter = this.renderer2.listen(this.controlDiv.nativeElement, 'mouseenter', () => {
       this.showControls = true;
     });
 
-    this.unlistenMouseLeave = this.renderer2.listen(this.controlDiv.nativeElement, 'mouseleave', () => {
+    this.unlistenControlDivMouseLeave = this.renderer2.listen(this.controlDiv.nativeElement, 'mouseleave', () => {
       this.showControls = false;
+    });
+
+    this.unlistenControlDivTouchEnd = this.renderer2.listen(this.controlDiv.nativeElement, 'touchend', () => {
+      setTimeout(() => {
+        if (this.currentPlayerState !== 'pause') {
+          this.showControls = false;
+        }
+      }, 3000)
+    });
+
+    this.unlistenControlDivTouchStart = this.renderer2.listen(this.controlDiv.nativeElement, 'touchstart', () => {
+      this.showControls = true;
+    });
+
+    this.unlistenTargetTouchStart = this.renderer2.listen(this.target.nativeElement, 'touchstart', () => {
+      this.showControls = true;
     });
 
     this.viewerService.sidebarMenuEvent.subscribe(event => {
@@ -80,8 +102,8 @@ export class VideoPlayerComponent implements AfterViewInit {
       this.handleVideoControls(data);
       this.viewerService.playerEvent.emit(data);
       if (this.player.currentTime() == this.player.duration()) {
-        this.handleVideoControls({type: 'ended'});
-        this.viewerService.playerEvent.emit({type: 'ended'});
+        this.handleVideoControls({ type: 'ended' });
+        this.viewerService.playerEvent.emit({ type: 'ended' });
       }
     })
     events.forEach(event => {
@@ -106,6 +128,7 @@ export class VideoPlayerComponent implements AfterViewInit {
 
   play() {
     this.player.play();
+    this.currentPlayerState = 'play'
     this.showPauseButton = true;
     this.showPlayButton = false;
     this.toggleForwardRewindButton();
@@ -114,6 +137,7 @@ export class VideoPlayerComponent implements AfterViewInit {
 
   pause() {
     this.player.pause();
+    this.currentPlayerState = 'pause'
     this.showPauseButton = false;
     this.showPlayButton = true;
     this.viewerService.raiseHeartBeatEvent('PAUSE');
@@ -135,6 +159,7 @@ export class VideoPlayerComponent implements AfterViewInit {
     if (type === "playing") {
       this.showPlayButton = false;
       this.showPauseButton = true;
+      this.showControls = false;
     }
     if (type === 'ended') {
       this.totalSpentTime += new Date().getTime() - this.startTime;
@@ -178,7 +203,12 @@ export class VideoPlayerComponent implements AfterViewInit {
     if (this.player) {
       this.player.dispose();
     }
-    this.unlistenMouseLeave();
-    this.unlistenMouseEnter();
+    this.unlistenTargetMouseEnter();
+    this.unlistenTargetMouseLeave();
+    this.unlistenControlDivMouseEnter();
+    this.unlistenControlDivMouseLeave();
+    this.unlistenControlDivTouchEnd();
+    this.unlistenControlDivTouchStart();
+    this.unlistenTargetTouchStart();
   }
 }
