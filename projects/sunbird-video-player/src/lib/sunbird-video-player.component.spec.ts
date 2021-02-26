@@ -38,9 +38,9 @@ describe('SunbirdVideoPlayerComponent', () => {
   });
 
   it('should initialize player config and log event when offline', () => {
-    const sunbirdVideoPlayerService = TestBed.get(SunbirdVideoPlayerService);
-    const viewerService = TestBed.get(ViewerService);
-    const errorService = TestBed.get(ErrorService);
+    const sunbirdVideoPlayerService = TestBed.inject(SunbirdVideoPlayerService);
+    const viewerService = TestBed.inject(ViewerService);
+    const errorService = TestBed.inject(ErrorService);
     spyOn(sunbirdVideoPlayerService, 'initialize');
     spyOn(viewerService, 'initialize');
     spyOn(viewerService, 'raiseExceptionLog');
