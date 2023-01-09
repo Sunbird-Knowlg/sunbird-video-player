@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/sunbird-video-player
     docker:
-      - image: circleci/node:14.21.1-browsers
+      - image: cimg/node:14.21.1-browsers
     steps:
       - checkout:
           path: ~/sunbird-video-player
