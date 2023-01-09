@@ -302,7 +302,7 @@ describe('VideoPlayerComponent', () => {
     expect(component.viewerService.metaData.transcripts).toEqual(['en', 'bn']);
     expect(component.viewerService.raiseHeartBeatEvent).toHaveBeenCalledWith(telemetryObject.type, telemetryObject.extra);
    });
-   it('should be defined transcripts when changes on transcripts config', () => {
+  it('should be defined transcripts when changes on transcripts config', () => {
     component.player = {
       play: jasmine.createSpy('play'),
       pause: jasmine.createSpy('pause')

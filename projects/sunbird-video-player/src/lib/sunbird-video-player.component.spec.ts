@@ -155,7 +155,7 @@ describe('SunbirdVideoPlayerComponent', () => {
       response: mockData.questionSet, time: 80, identifier: mockData.questionSet.identifier
     };
     component.QumlPlayerConfig = mockData.playerConfig;
-    const viewerService = TestBed.get(ViewerService);
+    const viewerService = TestBed.inject(ViewerService);
     const spy = spyOn(viewerService, 'raiseImpressionEvent');
     const spy1 = spyOn(viewerService, 'raiseHeartBeatEvent');
     component.questionSetData(options);
@@ -164,7 +164,7 @@ describe('SunbirdVideoPlayerComponent', () => {
   });
 
   it('should raise Impression when question set ends', () => {
-    const viewerService = TestBed.get(ViewerService);
+    const viewerService = TestBed.inject(ViewerService);
     const spy = spyOn(viewerService, 'raiseImpressionEvent');
     component.videoInstance = jasmine.createSpyObj('videoInstance', ['controls', 'play']);
     component.qumlPlayerEvents({ eid: 'QUML_SUMMARY', edata: { extra: [{ id: 'score', value: '100' }] } });
@@ -252,7 +252,7 @@ describe('SunbirdVideoPlayerComponent', () => {
     spyOn(document, 'fullscreenElement').and.returnValue(true);
     spyOn(component.videoInstance, 'play');
     spyOn(component.videoInstance, 'controls');
-    const viewerService = TestBed.get(ViewerService);
+    const viewerService = TestBed.inject(ViewerService);
     spyOn(viewerService, 'raiseImpressionEvent');
     component.qumlPlayerEvents(qumlEventSummary);
     expect(component.videoInstance.play).toHaveBeenCalled();
@@ -285,7 +285,7 @@ describe('SunbirdVideoPlayerComponent', () => {
     spyOn(document, 'fullscreenElement').and.returnValue(true);
     spyOn(component.videoInstance, 'play');
     spyOn(component.videoInstance, 'controls');
-    const viewerService = TestBed.get(ViewerService);
+    const viewerService = TestBed.inject(ViewerService);
     spyOn(viewerService, 'raiseImpressionEvent');
     component.qumlPlayerEvents(qumlEventSummary);
     expect(component.videoInstance.play).toHaveBeenCalled();
@@ -306,7 +306,7 @@ describe('SunbirdVideoPlayerComponent', () => {
       time: 100,
       identifier: 'do_123'
     };
-    const viewerService = TestBed.get(ViewerService);
+    const viewerService = TestBed.inject(ViewerService);
     spyOn(viewerService, 'raiseImpressionEvent');
     spyOn(viewerService, 'raiseHeartBeatEvent');
     component.questionSetData(parameter);
