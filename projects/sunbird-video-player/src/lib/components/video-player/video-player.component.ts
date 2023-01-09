@@ -163,6 +163,10 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
         }
       }
     }
+    if (changes?.config?.currentValue?.transcripts !== changes?.config?.previousValue?.transcripts) {
+       this.transcripts = [];
+       this.transcripts = this.viewerService.handleTranscriptsData(_.get(this.config, 'transcripts') || []);
+    }
   }
 
   onLoadMetadata(e) {

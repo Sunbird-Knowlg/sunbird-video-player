@@ -302,11 +302,25 @@ describe('VideoPlayerComponent', () => {
     expect(component.viewerService.metaData.transcripts).toEqual(['en', 'bn']);
     expect(component.viewerService.raiseHeartBeatEvent).toHaveBeenCalledWith(telemetryObject.type, telemetryObject.extra);
    });
+   it('should be defined transcripts when changes on transcripts config', () => {
+    component.player = {
+      play: jasmine.createSpy('play'),
+      pause: jasmine.createSpy('pause')
+    };
+    spyOn(component.viewerService, 'handleTranscriptsData').and.callFake(() => 'true');
+    spyOn(component, 'pause');
+    spyOn(component, 'play');
+    component.ngOnChanges(mockData.changesForBlank);
+    expect(component.pause).not.toHaveBeenCalled();
+    expect(component.play).not.toHaveBeenCalled();
+    expect(component.transcripts).toBeDefined();
+  });
   it('should play the video from point it was paused while adding question set on cancel click', () => {
       component.player = {
         play: jasmine.createSpy('play')
       };
       spyOn(component, 'play');
+      spyOn(component.viewerService, 'handleTranscriptsData').and.callFake(() => 'true');
       component.ngOnChanges(mockData.changesForPlay);
       expect(component.play).toHaveBeenCalled();
   });
@@ -315,6 +329,7 @@ describe('VideoPlayerComponent', () => {
       pause: jasmine.createSpy('pause')
     };
     spyOn(component, 'pause');
+    spyOn(component.viewerService, 'handleTranscriptsData').and.callFake(() => 'true');
     component.ngOnChanges(mockData.changesForPause);
     expect(component.pause).toHaveBeenCalled();
   });
@@ -323,6 +338,7 @@ describe('VideoPlayerComponent', () => {
       play: jasmine.createSpy('play'),
       pause: jasmine.createSpy('pause')
     };
+    spyOn(component.viewerService, 'handleTranscriptsData').and.callFake(() => 'true');
     spyOn(component, 'pause');
     spyOn(component, 'play');
     component.ngOnChanges(mockData.changesForBlank);
