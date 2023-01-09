@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/project-sunbird/sunbird-video-player/blob/release-5.0.0/README.md",
   "bugs": {
-    "urls": "https://github.com/project-sunbird/sunbird-video-player/issues"
+    "url": "https://github.com/project-sunbird/sunbird-video-player/issues"
   },
   "repository": {
     "type": "git",
