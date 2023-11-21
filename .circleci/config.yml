@@ -10,8 +10,9 @@ jobs:
       - run:
           name: Show current branch
           command: echo ${CIRCLE_BRANCH}
-      - run: cd projects/sunbird-video-player &&  npm install --no-progress
-      - run: npm install --no-progress
+      - run:
+          name: Install dependecies and audit for critical 
+          command: cd projects/sunbird-video-player &&  npm install --no-progress --legacy-peer-deps && npx audit-ci@^6 --config ./audit-ci.jsonc
       - run:
           name: ng lint
           command: npm run lint
