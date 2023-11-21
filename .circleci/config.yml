@@ -15,7 +15,7 @@ jobs:
           command: cd projects/sunbird-video-player &&  npm install --no-progress --legacy-peer-deps && npx audit-ci@^6 --config ./audit-ci.jsonc
       - run:
           name: ng lint
-          command: npm run lint
+          command: cd ~/sunbird-video-player && npm install --no-progress --legacy-peer-deps  && npm run lint
       - run:
           name: Executing test cases
           command: npm run test -- --no-watch
