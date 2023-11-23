@@ -1,6 +1,6 @@
 {
   "name": "@project-sunbird/sunbird-video-player-v9",
-  "version": "5.9.0",
+  "version": "6.0.0",
   "peerDependencies": {
     "@angular/common": "15.2.10",
     "@angular/core": "15.2.10",
