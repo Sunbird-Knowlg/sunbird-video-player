@@ -140,7 +140,6 @@ describe('SunbirdVideoPlayerComponent', () => {
     expect(component.traceId).toEqual(component.playerConfig.config.traceId);
   });
   it('should call raiseInternetDisconnectionError', () => {
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     component.videoPlayerService['context'] = {
       channel: '12345'
     };
