@@ -14,7 +14,6 @@ import { SunbirdVideoPlayerService } from './sunbird-video-player.service';
   styleUrls: ['./sunbird-video-player.component.scss']
 })
 export class SunbirdVideoPlayerComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
-
   @Input() playerConfig: PlayerConfig;
   @Input() action?: IAction;
   @Output() playerEvent: EventEmitter<object>;
