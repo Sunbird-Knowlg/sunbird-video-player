@@ -7,6 +7,7 @@
     "build": "ng build sunbird-video-player --watch=true",
     "test": "ng test sunbird-video-player --code-coverage --watch=false",
     "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
     "e2e": "ng e2e",
     "link-sdk": "npm link @project-sunbird/sunbird-player-sdk && cd projects/sunbird-video-player && npm link @project-sunbird/sunbird-player-sdk && cd ../..",
     "link-player": "cd dist/sunbird-video-player && npm link && cd ../.. && npm link @project-sunbird/sunbird-video-player-v9",
