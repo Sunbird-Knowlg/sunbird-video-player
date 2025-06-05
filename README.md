@@ -722,3 +722,39 @@ Click to see the input data - [playerConfig](README.md#step-4-send-input-to-rend
 Click to see the sample code - [sampleCode](https://github.com/Sunbird-Ed/SunbirdEd-mobile-app/blob/release-4.8.0/src/app/player/player.page.html)
 
 <br  /><br  />
+
+### Code Quality
+
+The project maintains code quality through automated checks that run on every pull request:
+
+1. **Linting**
+   - Runs ESLint to check code style and quality
+   - Command: `npm run lint`
+
+2. **Dependencies**
+   - Uses `npm i --legacy-peer-deps` for deterministic installations
+   - GitHub Actions cache for faster builds
+
+3. **Code Formatting**
+   - Ensures consistent code formatting
+   - Can be automatically fixed using `npm run lint:fix`
+
+4. **Testing**
+   - Unit tests using Karma
+   - Command: `npm run test`
+
+These checks ensure consistent code style and secure dependency management.
+
+### Package Publishing
+
+The project has two automated publishing workflows which build and publishes NPM packages whenever a new tag is pushed to the repository.
+
+1. **Angular Module**
+   - Builds package with `npm run build-lib`
+   - Creates NPM package
+   - Publishes to NPM registry as @project-sunbird/sunbird-video-player-v9, using NPM authentication token (must be provided as GitHub secret `NPM_TOKEN`)
+
+2. **Web Component**
+   - Builds package with `npm run build-web-component`
+   - Creates NPM package
+   - Publishes to NPM registry as @project-sunbird/sunbird-video-player-web-component, using NPM authentication token (must be provided as GitHub secret `NPM_TOKEN`)
