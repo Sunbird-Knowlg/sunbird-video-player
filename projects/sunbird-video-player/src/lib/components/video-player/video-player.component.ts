@@ -183,6 +183,13 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
     }
   }
 
+  enterPiPHandler = (e: Event) => {
+    e.preventDefault();
+    if (document.exitPictureInPicture) {
+      document.exitPictureInPicture();
+    }
+  };
+
   registerEvents() {
     const promise = this.player.play();
     if (promise !== undefined) {
@@ -251,16 +258,11 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
 
     this.player.ready(() => {
       const videoEl = this.player.tech().el();
-    
       if (document.pictureInPictureEnabled && this.disablePictureInPicture) {
-        videoEl.addEventListener('enterpictureinpicture', (e) => {
-          e.preventDefault();
-          if (document.exitPictureInPicture) {
-            document.exitPictureInPicture();
-          }
-        });
+        videoEl.addEventListener('enterpictureinpicture', this.enterPiPHandler);
       }
     });
+
 
     events.forEach(event => {
       this.player.on(event, (data) => {
@@ -460,6 +462,8 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
 
   ngOnDestroy() {
     if (this.player) {
+      const videoEl = this.player.tech().el();
+      videoEl.removeEventListener('enterpictureinpicture', this.enterPiPHandler);
       this.player.dispose();
     }
     this.unlistenTargetMouseMove();
