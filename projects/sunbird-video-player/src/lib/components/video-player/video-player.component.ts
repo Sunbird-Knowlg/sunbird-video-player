@@ -42,11 +42,15 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
   setMetaDataConfig = false;
   totalDuration = 0;
   disablePictureInPicture = false;
+  playsinline = false;
+  disableRemotePlayback = false;
 
   constructor(public viewerService: ViewerService, private renderer2: Renderer2,
               @Optional()public questionCursor: QuestionCursor, private http: HttpClient, public cdr: ChangeDetectorRef ) { }
   ngOnInit() {
     this.disablePictureInPicture = _.get(this.config, 'disablePictureInPictureMode', false);
+    this.playsinline = _.get(this.config, 'playsinline', false);
+    this.disableRemotePlayback = _.get(this.config, 'disableRemotePlayback', false);
     this.transcripts = this.viewerService.handleTranscriptsData(_.get(this.config, 'transcripts') || []);
   }
   ngAfterViewInit() {
@@ -242,6 +246,19 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
       if (this.totalDuration === 0) {
         this.totalDuration = this.viewerService.metaData.totalDuration = this.player.duration();
         this.viewerService.playerEvent.emit({ ...data, duration: this.totalDuration });
+      }
+    });
+
+    this.player.ready(() => {
+      const videoEl = this.player.tech().el();
+    
+      if (document.pictureInPictureEnabled) {
+        videoEl.addEventListener('enterpictureinpicture', (e) => {
+          e.preventDefault();
+          if (document.exitPictureInPicture) {
+            document.exitPictureInPicture();
+          }
+        });
       }
     });
 
