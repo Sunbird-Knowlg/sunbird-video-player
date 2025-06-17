@@ -252,7 +252,7 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
     this.player.ready(() => {
       const videoEl = this.player.tech().el();
     
-      if (document.pictureInPictureEnabled) {
+      if (document.pictureInPictureEnabled && this.disablePictureInPicture) {
         videoEl.addEventListener('enterpictureinpicture', (e) => {
           e.preventDefault();
           if (document.exitPictureInPicture) {
