@@ -186,7 +186,9 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
   enterPiPHandler = (e: Event) => {
     e.preventDefault();
     if (document.exitPictureInPicture) {
-      document.exitPictureInPicture();
+      document.exitPictureInPicture().catch(error => {
+        console.error('Failed to exit Picture-in-Picture mode:', error);
+      });
     }
   };
 
