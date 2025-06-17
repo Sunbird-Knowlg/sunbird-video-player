@@ -42,11 +42,15 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
   setMetaDataConfig = false;
   totalDuration = 0;
   disablePictureInPicture = false;
+  playsinline = false;
+  disableRemotePlayback = false;
 
   constructor(public viewerService: ViewerService, private renderer2: Renderer2,
               @Optional()public questionCursor: QuestionCursor, private http: HttpClient, public cdr: ChangeDetectorRef ) { }
   ngOnInit() {
     this.disablePictureInPicture = _.get(this.config, 'disablePictureInPictureMode', false);
+    this.playsinline = _.get(this.config, 'playsinline', false);
+    this.disableRemotePlayback = _.get(this.config, 'disableRemotePlayback', false);
     this.transcripts = this.viewerService.handleTranscriptsData(_.get(this.config, 'transcripts') || []);
   }
   ngAfterViewInit() {
@@ -179,6 +183,15 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
     }
   }
 
+  enterPiPHandler = (e: Event) => {
+    e.preventDefault();
+    if (document.exitPictureInPicture) {
+      document.exitPictureInPicture().catch(error => {
+        console.error('Failed to exit Picture-in-Picture mode:', error);
+      });
+    }
+  };
+
   registerEvents() {
     const promise = this.player.play();
     if (promise !== undefined) {
@@ -244,6 +257,14 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
         this.viewerService.playerEvent.emit({ ...data, duration: this.totalDuration });
       }
     });
+
+    this.player.ready(() => {
+      const videoEl = this.player.tech().el();
+      if (document.pictureInPictureEnabled && this.disablePictureInPicture) {
+        videoEl.addEventListener('enterpictureinpicture', this.enterPiPHandler);
+      }
+    });
+
 
     events.forEach(event => {
       this.player.on(event, (data) => {
@@ -443,6 +464,8 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
 
   ngOnDestroy() {
     if (this.player) {
+      const videoEl = this.player.tech().el();
+      videoEl.removeEventListener('enterpictureinpicture', this.enterPiPHandler);
       this.player.dispose();
     }
     this.unlistenTargetMouseMove();
