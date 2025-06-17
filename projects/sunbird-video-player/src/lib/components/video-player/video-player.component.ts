@@ -41,11 +41,12 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
   isAutoplayPrevented = false;
   setMetaDataConfig = false;
   totalDuration = 0;
-
+  disablePictureInPicture = false;
 
   constructor(public viewerService: ViewerService, private renderer2: Renderer2,
               @Optional()public questionCursor: QuestionCursor, private http: HttpClient, public cdr: ChangeDetectorRef ) { }
   ngOnInit() {
+    this.disablePictureInPicture = _.get(this.config, 'disablePictureInPictureMode', false);
     this.transcripts = this.viewerService.handleTranscriptsData(_.get(this.config, 'transcripts') || []);
   }
   ngAfterViewInit() {
@@ -58,6 +59,7 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
         muted: _.get(this.config, 'muted'),
         playbackRates: [0.5, 1, 1.5, 2],
         controlBar: {
+          pictureInPictureToggle: !this.disablePictureInPicture,
           children: ['playToggle', 'volumePanel', 'durationDisplay',
             'progressControl', 'remainingTimeDisplay', 'CaptionsButton',
             'playbackRateMenuButton', 'fullscreenToggle']
