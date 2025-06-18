@@ -240,11 +240,14 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
       this.viewerService.currentlength = this.viewerService.metaData.currentDuration;
       this.totalSpentTime += new Date().getTime() - this.startTime;
       this.startTime = new Date().getTime();
-      const remainingTime = Math.floor(this.totalDuration - this.player.currentTime());
-      if (remainingTime <= 0) {
-            this.viewerService.metaData.currentDuration = 0;
-            this.handleVideoControls({ type: 'ended' });
-            this.viewerService.playerEvent.emit({ type: 'ended' });
+      const currentTime = this.player.currentTime();
+      if(currentTime > 0 && this.totalDuration > 0) {
+        const remainingTime = Math.floor(this.totalDuration - currentTime);
+        if (remainingTime <= 0) {
+              this.viewerService.metaData.currentDuration = 0;
+              this.handleVideoControls({ type: 'ended' });
+              this.viewerService.playerEvent.emit({ type: 'ended' });
+        }
       }
     });
     this.player.on('subtitleChanged', (event, track) => {
