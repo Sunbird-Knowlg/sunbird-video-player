@@ -42,15 +42,11 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
   setMetaDataConfig = false;
   totalDuration = 0;
   disablePictureInPicture = false;
-  playsinline = false;
-  disableRemotePlayback = false;
 
   constructor(public viewerService: ViewerService, private renderer2: Renderer2,
               @Optional()public questionCursor: QuestionCursor, private http: HttpClient, public cdr: ChangeDetectorRef ) { }
   ngOnInit() {
     this.disablePictureInPicture = _.get(this.config, 'disablePictureInPictureMode', false);
-    this.playsinline = _.get(this.config, 'playsinline', false);
-    this.disableRemotePlayback = _.get(this.config, 'disableRemotePlayback', false);
     this.transcripts = this.viewerService.handleTranscriptsData(_.get(this.config, 'transcripts') || []);
   }
   ngAfterViewInit() {
@@ -63,7 +59,6 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
         muted: _.get(this.config, 'muted'),
         playbackRates: [0.5, 1, 1.5, 2],
         controlBar: {
-          pictureInPictureToggle: !this.disablePictureInPicture,
           children: ['playToggle', 'volumePanel', 'durationDisplay',
             'progressControl', 'remainingTimeDisplay', 'CaptionsButton',
             'playbackRateMenuButton', 'fullscreenToggle']
@@ -183,15 +178,6 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
     }
   }
 
-  enterPiPHandler = (e: Event) => {
-    e.preventDefault();
-    if (document.exitPictureInPicture) {
-      document.exitPictureInPicture().catch(error => {
-        console.error('Failed to exit Picture-in-Picture mode:', error);
-      });
-    }
-  };
-
   registerEvents() {
     const promise = this.player.play();
     if (promise !== undefined) {
@@ -240,14 +226,11 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
       this.viewerService.currentlength = this.viewerService.metaData.currentDuration;
       this.totalSpentTime += new Date().getTime() - this.startTime;
       this.startTime = new Date().getTime();
-      const currentTime = this.player.currentTime();
-      if(currentTime > 0 && this.totalDuration > 0) {
-        const remainingTime = Math.floor(this.totalDuration - currentTime);
-        if (remainingTime <= 0) {
-              this.viewerService.metaData.currentDuration = 0;
-              this.handleVideoControls({ type: 'ended' });
-              this.viewerService.playerEvent.emit({ type: 'ended' });
-        }
+      const remainingTime = Math.floor(this.totalDuration - this.player.currentTime());
+      if (remainingTime <= 0) {
+            this.viewerService.metaData.currentDuration = 0;
+            this.handleVideoControls({ type: 'ended' });
+            this.viewerService.playerEvent.emit({ type: 'ended' });
       }
     });
     this.player.on('subtitleChanged', (event, track) => {
@@ -260,14 +243,6 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
         this.viewerService.playerEvent.emit({ ...data, duration: this.totalDuration });
       }
     });
-
-    this.player.ready(() => {
-      const videoEl = this.player.tech().el();
-      if (document.pictureInPictureEnabled && this.disablePictureInPicture) {
-        videoEl.addEventListener('enterpictureinpicture', this.enterPiPHandler);
-      }
-    });
-
 
     events.forEach(event => {
       this.player.on(event, (data) => {
@@ -467,8 +442,6 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
 
   ngOnDestroy() {
     if (this.player) {
-      const videoEl = this.player.tech().el();
-      videoEl.removeEventListener('enterpictureinpicture', this.enterPiPHandler);
       this.player.dispose();
     }
     this.unlistenTargetMouseMove();
