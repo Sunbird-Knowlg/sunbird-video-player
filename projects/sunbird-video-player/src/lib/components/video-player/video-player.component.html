@@ -1,4 +1,4 @@
-<video #target class="video-js" controls [attr.disablePictureInPicture]="disablePictureInPicture" [attr.playsinline]="playsinline" [attr.disableRemotePlayback]="disableRemotePlayback" crossorigin="anonymous" (loadeddata)="onLoadMetadata($event)">
+<video #target class="video-js" controls crossorigin="anonymous" (loadeddata)="onLoadMetadata($event)">
   <track *ngFor="let trans of transcripts" default="{{trans.default}}" kind="captions" src="{{trans.artifactUrl}}" srclang="{{trans.languageCode}}" label="{{trans.language}}" >
 </video>
 <div #controlDiv>

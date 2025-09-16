@@ -260,7 +260,7 @@ export class ViewerService {
         this.uniqueVisitedLength = this.totalLength;
       }
       this.visitedLength = this.getVisitedLength();
-      this.timeSpent = this.utilService.getTimeSpentText(_.floor(this.totalLength));
+      this.timeSpent = this.utilService.getTimeSpentText(this.visitedLength);
       
       this.videoPlayerService.end(
         duration,
