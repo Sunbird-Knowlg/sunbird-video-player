@@ -1,4 +1,4 @@
-name: Publish Video Player Package
+name: Publish Video Player Web Component
 
 on:
   push:
@@ -16,20 +16,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.15.0'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Install library dependencies
-        working-directory: ./projects/sunbird-video-player
-        run: npm ci --legacy-peer-deps
+      - name: Build web component
+        run: npm run build-web-component
 
-      - name: Build and publish package
+      - name: Publish web component
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          npm run build-web-component
-          npm pack ./web-component
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
-          npm publish project-sunbird-sunbird-video-player-web-component-* --access public
-      
+        run: npm publish ./web-component --access public
