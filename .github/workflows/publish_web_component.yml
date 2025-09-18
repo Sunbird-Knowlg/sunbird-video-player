@@ -20,6 +20,10 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
+      - name: Install library dependencies
+        working-directory: ./projects/sunbird-video-player
+        run: npm ci --legacy-peer-deps
+
       - name: Build and publish package
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
