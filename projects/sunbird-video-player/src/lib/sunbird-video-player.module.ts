@@ -1,4 +1,4 @@
-import { NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SunbirdPlayerSdkModule  } from '@project-sunbird/sunbird-player-sdk-v9';
@@ -18,6 +18,6 @@ import { QumlLibraryModule } from '@project-sunbird/sunbird-quml-player-v9';
     QumlLibraryModule,
   ],
   providers: [ErrorService],
-  exports: [SunbirdVideoPlayerComponent , SunbirdPlayerSdkModule],
+  exports: [SunbirdVideoPlayerComponent , SunbirdPlayerSdkModule]
 })
 export class SunbirdVideoPlayerModule { }
