@@ -43,6 +43,7 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
   totalDuration = 0;
   disablePictureInPicture = false;
 
+
   constructor(public viewerService: ViewerService, private renderer2: Renderer2,
               @Optional()public questionCursor: QuestionCursor, private http: HttpClient, public cdr: ChangeDetectorRef ) { }
   ngOnInit() {
