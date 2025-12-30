@@ -4,10 +4,12 @@
             *ngIf="viewState ==='player'" [ngClass]="{'isVisible': showControls}"></sb-player-side-menu-icon>
       <video-player *ngIf="viewState === 'player'" (questionSetData)="questionSetData($event)" (playerInstance)="playerInstance($event)" [config]="playerConfig.config" [action]="playerAction">
       </video-player>
-      <sb-player-sidebar *ngIf="viewState ==='player'"
+      <sb-player-sidebar [playerConfig]="playerConfig"
+      *ngIf="viewState ==='player'"
        [title]="viewerService.contentName"
       (sidebarEvent)="sideBarEvents($event)" [config]="sideMenuConfig"></sb-player-sidebar>
-      <sb-player-end-page 
+      <sb-player-end-page
+      [playerConfig]="playerConfig"
       [contentName]="viewerService.contentName" 
       [outcomeLabel]="viewerService.showScore ? 'Score: ': ''" 
       [outcome]="viewerService.showScore ? viewerService.scoreObtained + ((viewerService.maxScore && viewerService.maxScore > 0) ? '/' + viewerService.maxScore : '')  : ''"

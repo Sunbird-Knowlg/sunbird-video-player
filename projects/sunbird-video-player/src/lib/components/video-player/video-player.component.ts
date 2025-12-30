@@ -41,11 +41,13 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
   isAutoplayPrevented = false;
   setMetaDataConfig = false;
   totalDuration = 0;
+  disablePictureInPicture = false;
 
 
   constructor(public viewerService: ViewerService, private renderer2: Renderer2,
               @Optional()public questionCursor: QuestionCursor, private http: HttpClient, public cdr: ChangeDetectorRef ) { }
   ngOnInit() {
+    this.disablePictureInPicture = _.get(this.config, 'disablePictureInPictureMode', false);
     this.transcripts = this.viewerService.handleTranscriptsData(_.get(this.config, 'transcripts') || []);
   }
   ngAfterViewInit() {
