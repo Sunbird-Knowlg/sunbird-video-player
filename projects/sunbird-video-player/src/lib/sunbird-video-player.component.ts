@@ -9,6 +9,7 @@ import { IAction } from './playerInterfaces';
 import { ViewerService } from './services/viewer.service';
 import { SunbirdVideoPlayerService } from './sunbird-video-player.service';
 @Component({
+  standalone: false,
   selector: 'sunbird-video-player',
   templateUrl: './sunbird-video-player.component.html',
   styleUrls: ['./sunbird-video-player.component.scss']
