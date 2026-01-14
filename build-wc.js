@@ -16,9 +16,16 @@ const build = async () => {
     "projects/sunbird-video-player/src/lib/assets/videojs.markers.min.css",
   ];
   await fs.ensureDir("dist/video-player-wc");
+  await fs.ensureDir("dist/video-player-wc/assets");
+  await fs.copy("projects/sunbird-video-player/src/lib/assets", "dist/video-player-wc/assets");
   // make signle js file for web component
   await concat(files, "web-component/sunbird-video-player.js");
   await fs.copy("./dist/video-player-wc/assets", "web-component/assets");
+  // keep the demo bundle and assets in sync with the latest build
+  await fs.ensureDir("web-component-demo");
+  await fs.copy("web-component/sunbird-video-player.js", "web-component-demo/sunbird-video-player.js");
+  await fs.copy("web-component/styles.css", "web-component-demo/styles.css");
+  await fs.copy("web-component/assets", "web-component-demo/assets");
   const assetFilesToBeDeleted = ["videojs-markers.js", "videojs-transcript-click.min.js", "videojs.markers.min.css"]
 
   assetFilesToBeDeleted.forEach(async (file) => {
