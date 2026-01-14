@@ -9,6 +9,7 @@ import { IAction } from './playerInterfaces';
 import { ViewerService } from './services/viewer.service';
 import { SunbirdVideoPlayerService } from './sunbird-video-player.service';
 @Component({
+  // eslint-disable-next-line @angular-eslint/prefer-standalone
   standalone: false,
   selector: 'sunbird-video-player',
   templateUrl: './sunbird-video-player.component.html',

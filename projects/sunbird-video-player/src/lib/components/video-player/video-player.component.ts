@@ -10,6 +10,7 @@ import { ViewerService } from '../../services/viewer.service';
 import { IAction } from '../../playerInterfaces';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/prefer-standalone
   standalone: false,
   selector: 'video-player',
   templateUrl: './video-player.component.html',
