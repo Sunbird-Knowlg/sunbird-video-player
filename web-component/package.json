@@ -1,5 +1,5 @@
 {
-  "name": "@jeraldj/sunbird-video-player-web-component",
+  "name": "@project-sunbird/sunbird-video-player-web-component",
   "version": "8.2.0",
   "description": "The web component package for the sunbird video player",
   "main": "sunbird-video-player.js",
