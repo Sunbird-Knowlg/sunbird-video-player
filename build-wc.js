@@ -58,10 +58,15 @@ const build = async () => {
   // Copy README to web-component root
   await fs.copy("README.md", "web-component/README.md");
 
-  // Restore package.json to assets/video-player directory
+  // Restore package.json to both locations
   if (packageJsonContent) {
+    // Keep package.json at web-component root
+    await fs.writeJson(packageJsonSource, packageJsonContent, { spaces: 2 });
+    console.log("✅ package.json restored to web-component/");
+
+    // Also copy to assets/video-player directory
     await fs.writeJson(`${outputDir}/package.json`, packageJsonContent, { spaces: 2 });
-    console.log("✅ package.json moved to web-component/assets/video-player/");
+    console.log("✅ package.json copied to web-component/assets/video-player/");
   }
 
   // Also copy to demo folder with same structure
