@@ -208,6 +208,7 @@ export class SunbirdVideoPlayerComponent implements OnInit, AfterViewInit, OnDes
   }
 
   exitContent(event) {
+    this.viewerService.raiseEndEvent(true);
     this.playerEvent.emit(event);
     this.viewerService.raiseHeartBeatEvent('EXIT');
   }
