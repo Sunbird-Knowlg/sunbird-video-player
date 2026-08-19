@@ -107,6 +107,7 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
         autoplay: true,
         muted: _.get(this.config, 'muted'),
         playbackRates: [0.5, 1, 1.5, 2],
+        textTrackSettings: false,
         controlBar: {
           children: ['playToggle', 'volumePanel', 'durationDisplay',
             'progressControl', 'remainingTimeDisplay', 'CaptionsButton',
