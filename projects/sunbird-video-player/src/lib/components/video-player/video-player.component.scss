@@ -74,6 +74,11 @@
   font-size: 1.1em;
 }
 
+// video.js creates these elements outside Angular's renderer, so ::ng-deep is required (see note above).
+:host ::ng-deep .vjs-menu li {
+  text-transform: none;
+}
+
 @media screen and (min-width: 768px) {
   .video-js .vjs-tech {
     pointer-events: none;

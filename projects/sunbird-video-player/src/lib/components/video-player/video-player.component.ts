@@ -379,7 +379,8 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit, OnDestroy, O
   private addTranscriptTrack(kind: 'captions' | 'metadata', trans: any) {
     const src = kind === 'captions' ? trans.artifactUrl : trans.wordByWordUrl;
     const sourceSuffix = trans.sourceLanguage ? ' (Original)' : '';
-    const label = kind === 'captions' ? `${trans.language}${sourceSuffix}` : `${trans.language} (word-by-word)`;
+    const language = trans.language ? trans.language.charAt(0).toUpperCase() + trans.language.slice(1) : trans.language;
+    const label = kind === 'captions' ? `${language}${sourceSuffix}` : `${language} (word-by-word)`;
     const isDefault = kind === 'captions' ? !!trans.default : false;
     const trackEl = this.player.addRemoteTextTrack({
       kind,
