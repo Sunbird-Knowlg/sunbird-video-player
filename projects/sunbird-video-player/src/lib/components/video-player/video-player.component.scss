@@ -50,7 +50,7 @@
 }
 
 .vjs-menu-button-popup .vjs-menu .vjs-menu-content {
-  background-color: rgba(0, 0, 0, .72);
+  background-color: rgba(0, 0, 0, .95);
 }
 
 .js-focus-visible .vjs-menu li.vjs-selected:hover,
@@ -72,6 +72,11 @@
 .vjs-menu li,
 .vjs-playback-rate .vjs-playback-rate-value {
   font-size: 1.1em;
+}
+
+// video.js creates these elements outside Angular's renderer, so ::ng-deep is required (see note above).
+:host ::ng-deep .vjs-menu li {
+  text-transform: none;
 }
 
 @media screen and (min-width: 768px) {
@@ -249,7 +254,7 @@ div[data-marker-key] {
   display: flex;
   justify-content: center;
   pointer-events: none;
-  z-index: 3;
+  z-index: 2;
 
   &--hidden {
     display: none;
